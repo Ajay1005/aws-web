@@ -10,7 +10,7 @@ region = customregion
 
 db_conn = pymysql.connect(host=customhost, port=3306, user=customuser, password=custompass, db=customdb)
 output = {}
-table = 'employee'
+table = 'emp'
 
 
 @emp.route("/", methods=['GET', 'POST'])
