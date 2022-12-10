@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
-import mysql.connector
-from pymysql import connections
+import pymysql
 import boto3
 from config import *
 
@@ -9,7 +8,7 @@ emp = Flask(__name__)
 bucket = custombucket
 region = customregion
 
-db_conn = mysql.connector.connect(host=customhost, port=3306, user=customuser, password=custompass, db=customdb)
+db_conn = pymysql.connect(host=customhost, port=3306, user=customuser, password=custompass, db=customdb)
 output = {}
 table = 'employee'
 
@@ -22,6 +21,20 @@ def home():
 @emp.route("/about", methods=['POST'])
 def about():
     return render_template('www.intellipaat.com')
+
+@emp.route("/getemp", methods=['GET', 'POST'])
+def getempp():
+    return render_template('GetEmp.html')
+@emp.route("/fetchdata", methods=['GET', 'POST'])
+def fetch():
+    emp_id = request.form['emp_id']
+    sql_query = """select * from 'employee' where 'empid'=1"""
+    cursor = db_conn.cursor()
+    cursor.execute(sql_query)
+    record=cursor.fetchone()
+    return render_template('GetEmpOutput.html', id=record[0], fname=record[1], lname=record[2], interest=record[3], location=record[4])
+
+
 
 
 @emp.route("/addemp", methods=['GET', 'POST'])
